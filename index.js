@@ -1,67 +1,59 @@
-const Discord = require('discord.js-selfbot-v13');
-const client = new Discord.Client({
-  readyStatus: false,
+// AmtiXDev Says :
+// ======================================================================
+// Hello dear user, please do not remove rights from my project.
+// Have a nice day.
+// مرحبًا عزيزي المستخدم ، يرجى عدم إزالة الحقوق من مشروعي 
+// أتمنى لك يومًا سعيدًا.
+// ======================================================================
+
+const express = require("express")
+const app = express();
+
+app.listen(() => console.log(" >> Ready To Work :) << "));
+app.get('/', (req, res) => {
+  res.send(` AmtiXDev Says : Hi everyone :) `)
+});
+
+const { Client } = require('discord.js-selfbot-v13');
+const { joinVoiceChannel } = require('@discordjs/voice');
+const { autokill } = require('autokill');
+const { amtixtax } = require('amtix-tax');
+
+const amtixdev = new Client({
   checkUpdate: false
 });
 
-const keepAlive = require('./server.js')
-keepAlive()
+process.on('unhandledRejection', (reason, p) => {
+    console.log(reason, p);
+});
 
-client.on('ready', async () => {
+process.on('multipleResolves', (type, promise, reason) => {
+    console.log(type, promise, reason);
+});
+
+setInterval(() => {
+  if (!amtixdev || !amtixdev.user) {
+    console.log("Client Not Login, Process Kill")
+    process.kill(1);
+  }
+}, 5000);
 
 
-    console.clear();
-
-    console.log(`${client.user.tag} - rich presence started!`
-               )
-const r = new Discord.RichPresence()
-    .setApplicationId('Your Client ID')
-    .setType('STREAMING') //STREAMING, PLAYING, LISTENING.
-    .setURL('Your Twitch URL') // or your yt url
-    .setState('Your State')
-    .setName('mrnekrozyt')
-    .setDetails('Main Text')
-    .setStartTimestamp(Date.now()) // remove this if you dont want the timestamp (the time it started the rpc)
-    /*.setParty({         
-        max: 9999,
-        current: 6789,
-        id: Discord.getUUID(),
-    })*/
-    
-    //.setStartTimestamp(Date.now())
-    .setAssetsLargeImage('Static Image or Animated Image') //You can put links in tenor or discord and etc.
-    .setAssetsLargeText('Your Large Text') //Text when you hover the Large image
-    .setAssetsSmallImage('Static Image or Animated Image') //You can put links in tenor or discord and etc.
-    .setAssetsSmallText('Your Small Text') //Text when you hover the Small image
-    .addButton('Button Name', 'Your Button URL')
-    .addButton('Button Name', 'Your Button URL')
-     client.user.setActivity(r);
-     client.user.setPresence({ status: "dnd" }); //dnd, online, idle, offline
+amtixdev.on('ready', async () => {
+  console.log(`Your Account ${amtixdev.user.username} Is Ready!`);
 })
 
-client.login(process.env.TOKEN)
+amtixdev.on('ready', () => {
+    setInterval( async () => {
+    amtixdev.channels.fetch("1186031631199383745") // Channel Id (:
+     .then((channel) => { 
+      const VoiceConnection = joinVoiceChannel({
+       channelId: channel.id, 
+       guildId: channel.guild.id, 
+       adapterCreator: channel.guild.voiceAdapterCreator 
+       });
+    }).catch((error) => { return; });
+    }, 1000)
+}); 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Copyright to mrnekrozyt 2021-2023
-// Support Server:https://discord.gg/pSJ5JkmH6N
-// Source Code: https://github.com/mrnekrozyt/Streaming-24-7-RPC/
+amtixdev.login(process.env.token);
